@@ -66,7 +66,6 @@ function App() {
 
   const handleFilter = (filterOne, filterTwo, filterThree) => {
     fetchSortedVacancies(filterOne, filterTwo, filterThree);
-    handleSort(filterOne);
   }
 
   const fetchSortedVacancies = async (filterOne, filterTwo, filterThree) => {
@@ -78,6 +77,7 @@ function App() {
     const response = await api.get('/vacancies/sort/ScheduleExperience', {params: searchData});
     console.log(response.data)
     setVacancies(response.data);
+    setFilterOne("Неважно");
   }
 
   
@@ -108,11 +108,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-
   }, [filterTwo, filterThree]);
 
   useEffect(() => {
-    handleSort(filterOne);
   }, [filterOne]);
 
   return (
@@ -140,21 +138,21 @@ function App() {
         </div>
         <button type="submit" className="bg-gray-300 hover:bg-gray-400 text-[17px] rounded-xl text-center w-[100px] p-[5px]">Найти</button>
       </form>
-        <div className='flex m-auto bg-gray-200 w-[500px] mt-[20px] border-black border-[2px] rounded-lg w-[300px] min-h-[35px] text-black'>
-          <Dropdown className="text-center bg-white rounded-lg mb-[2px] p-[2px] flex border-black border-[2px] items-center text-black" label={filterOne} dismissOnClick={true}>
-            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px]" onClick={() => handleFilterOne('Неважно')}>Неважно</Dropdown.Item>
+        <div className='flex m-auto bg-gray-200 w-[500px] mt-[20px] border-black border-[2px] rounded-lg  min-h-[35px] text-black'>
+          <Dropdown className="w-[143px] text-center bg-white rounded-lg mb-[2px] p-[2px] flex border-black border-[2px] items-center text-black" label={filterOne} dismissOnClick={true}>
+            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[31px]" onClick={() => handleFilterOne('Неважно')}>Неважно</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px]" onClick={() => handleFilterOne('По возрастанию')}>По возрастанию</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[15px]" onClick={() => handleFilterOne("По убыванию")}>По убыванию</Dropdown.Item>
           </Dropdown>
           <Dropdown className="text-center bg-white w-fit rounded-lg mb-[2px] p-[2px] flex border-black border-[2px] items-center" label={filterTwo} dismissOnClick={true}>
-            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[20px]" onClick={() => handleFilterTwo('Все')}>Все</Dropdown.Item>
+            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[42px]" onClick={() => handleFilterTwo('Все')}>Все</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[20px]" onClick={() => handleFilterTwo('Без опыта')}>Без опыта</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[7px]" onClick={() => handleFilterTwo("Опыт 1-3 года")}>Опыт 1-3 года</Dropdown.Item>
-            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[7px]" onClick={() => handleFilterTwo("Опыт 3-6 лет")}>Опыт 3-6 лет</Dropdown.Item>
+            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[10px]" onClick={() => handleFilterTwo("Опыт 3-6 лет")}>Опыт 3-6 лет</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[15px]" onClick={() => handleFilterTwo("Опыт более 6 лет")}>Более 6 лет</Dropdown.Item>
           </Dropdown>
           <Dropdown className="text-center bg-white w-fit rounded-lg mb-[2px] p-[2px] flex border-black border-[2px] items-center" label={filterThree} dismissOnClick={true}>
-            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[20px]" onClick={() => handleFilterThree("Все")}>Все</Dropdown.Item>
+            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[52px]" onClick={() => handleFilterThree("Все")}>Все</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[20px]" onClick={() => handleFilterThree("Полный день")}>Полный день</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[7px]" onClick={() => handleFilterThree("Сменный график")}>Сменный график</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[5px]" onClick={() => handleFilterThree("Удаленная работа")}>Удаленная работа</Dropdown.Item>
