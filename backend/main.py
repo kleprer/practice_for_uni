@@ -35,6 +35,8 @@ class VacancyModel(VacancyBase):
     class Config:
         from_attributes = True
 
+
+
 def get_db():
     db = new_session()
     try:

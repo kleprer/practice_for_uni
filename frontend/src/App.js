@@ -51,11 +51,6 @@ function App() {
     setVacancies(vacancies);
   }
 
-  const handleFilter = (filterTwo, filterThree) => {
-    
-  }
-
-
   const handleFilterOne = (filterOne) => {
     setFilterOne(filterOne);
     handleSort(filterOne, filterTwo, filterThree);
@@ -69,6 +64,34 @@ function App() {
     setFilterThree(filterThree);
   }
 
+  const handleFilter = (filterOne, filterTwo, filterThree) => {
+    fetchSortedVacancies(filterOne, filterTwo, filterThree);
+    handleSort(filterOne);
+  }
+
+  const fetchSortedVacancies = async (filterOne, filterTwo, filterThree) => {
+    console.log(filterTwo, filterThree);
+    let searchData = {
+      experience: filterTwo,
+      schedule: filterThree
+    }
+    const response = await api.get('/vacancies/sort/ScheduleExperience', {params: searchData});
+    console.log(response.data)
+    setVacancies(response.data);
+  }
+
+  
+
+  // const fetchSortedByExperience = async (filterOne, schedule) => {
+  //   if (schedule !== "Все") {
+  //     const response = await api.get(`/vacancies/${schedule}`);
+  //     setVacancies(response.data);
+  //     handleFilterOne(filterOne);
+  //   }
+  // }
+
+  
+
   const fetchVacancies = async () => {
       const response = await api.get('/vacancies');
       setVacancies(response.data);
@@ -79,6 +102,18 @@ function App() {
   useEffect(() => {
     fetchVacancies();
   }, []);
+
+  useEffect(() => {
+    fetchSortedVacancies(filterOne, filterTwo, filterThree);
+  }, []);
+
+  useEffect(() => {
+
+  }, [filterTwo, filterThree]);
+
+  useEffect(() => {
+    handleSort(filterOne);
+  }, [filterOne]);
 
   return (
     <div className="w-[742px] m-auto pt-[20px]">
@@ -114,9 +149,9 @@ function App() {
           <Dropdown className="text-center bg-white w-fit rounded-lg mb-[2px] p-[2px] flex border-black border-[2px] items-center" label={filterTwo} dismissOnClick={true}>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[20px]" onClick={() => handleFilterTwo('Все')}>Все</Dropdown.Item>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[20px]" onClick={() => handleFilterTwo('Без опыта')}>Без опыта</Dropdown.Item>
-            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[7px]" onClick={() => handleFilterTwo("Опыт 1–3 года")}>Опыт 1–3 года</Dropdown.Item>
-            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[7px]" onClick={() => handleFilterTwo("Опыт 3–6 лет")}>Опыт 3–6 лет</Dropdown.Item>
-            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[15px]" onClick={() => handleFilterTwo("Более 6 лет")}>Более 6 лет</Dropdown.Item>
+            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[7px]" onClick={() => handleFilterTwo("Опыт 1-3 года")}>Опыт 1-3 года</Dropdown.Item>
+            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[7px]" onClick={() => handleFilterTwo("Опыт 3-6 лет")}>Опыт 3-6 лет</Dropdown.Item>
+            <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[15px]" onClick={() => handleFilterTwo("Опыт более 6 лет")}>Более 6 лет</Dropdown.Item>
           </Dropdown>
           <Dropdown className="text-center bg-white w-fit rounded-lg mb-[2px] p-[2px] flex border-black border-[2px] items-center" label={filterThree} dismissOnClick={true}>
             <Dropdown.Item className="bg-white w-full p-[4px] text-[15px] pl-[20px]" onClick={() => handleFilterThree("Все")}>Все</Dropdown.Item>
