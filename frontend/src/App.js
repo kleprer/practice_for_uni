@@ -81,15 +81,6 @@ function App() {
   }
 
   
-
-  // const fetchSortedByExperience = async (filterOne, schedule) => {
-  //   if (schedule !== "Все") {
-  //     const response = await api.get(`/vacancies/${schedule}`);
-  //     setVacancies(response.data);
-  //     handleFilterOne(filterOne);
-  //   }
-  // }
-
   
 
   const fetchVacancies = async () => {
@@ -165,8 +156,8 @@ function App() {
           <thead className="w-full  h-[40px]">
               <tr className="w-full">
                 <th className="w-[150px] p-[5px] border-[2px] border-black">Вакансия</th>
-                <th className="w-[80px] p-[5px] border-[2px] border-black">Зарплата</th>
-                <th className="w-[70px] p-[5px] border-[2px] border-black">Город</th>
+                <th className="w-[50px] p-[5px] border-[2px] border-black">Зарплата</th>
+                <th className="w-[90px] p-[5px] border-[2px] border-black">Город</th>
                 <th className="w-[60px] p-[5px] border-[2px] border-black">Опыт</th>
                 <th className="w-[110px] p-[5px] border-[2px] border-black">График работы</th>
               </tr>
