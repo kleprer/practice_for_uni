@@ -81,46 +81,6 @@ async def delete_vacancies(db: db_dependency):
         db.commit()
     return vacancies
 
-@app.get("/vacancies/sort/experience", response_model=List[VacancyModel])
-async def get_vacancies_sorted_by_experience(experience: str, db: db_dependency):
-    sorted_vacancies = []
-    vacancies = db.query(models.Vacancy).all()
-    if experience != "Все":
-        for v in vacancies:
-            if v.experience ==  experience:
-                sorted_vacancies += [v]
-    else:
-        sorted_vacancies = vacancies
-
-    return sorted_vacancies
-
-@app.get("/vacancies/sort/schedule", response_model=List[VacancyModel])
-async def get_vacancies_sorted_by_schedule(schedule: str, db: db_dependency):
-    sorted_vacancies = []
-    vacancies = db.query(models.Vacancy).all()
-    if schedule != "Все":
-        for v in vacancies:
-            if v.work_schedule ==  schedule:
-                sorted_vacancies += [v]
-    else:
-        sorted_vacancies = vacancies
-
-    return sorted_vacancies
-
-
-@app.get("/vacancies/sort/schedule_and_experience", response_model=List[VacancyModel])
-async def get_vacancies_sorted_by_schedule_and_experience(experience: str, schedule: str, db: db_dependency):
-    sorted_vacancies = []
-    vacancies = db.query(models.Vacancy).all()
-    if schedule != "Все" and experience != "Все":
-        for v in vacancies:
-            if v.work_schedule ==  schedule and v.experience == experience:
-                sorted_vacancies += [v]
-    else:
-        sorted_vacancies = vacancies
-
-    return sorted_vacancies
-
 @app.get("/vacancies/sort/ScheduleExperience", response_model=List[VacancyModel])
 async def get_sorted_by_schedule_and_experience(experience: str, schedule: str, db: db_dependency):
     sorted_vacancies = []
