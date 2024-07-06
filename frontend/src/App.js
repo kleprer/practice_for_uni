@@ -80,18 +80,6 @@ function App() {
     setFilterOne("Неважно");
   }
 
-  
-
-  // const fetchSortedByExperience = async (filterOne, schedule) => {
-  //   if (schedule !== "Все") {
-  //     const response = await api.get(`/vacancies/${schedule}`);
-  //     setVacancies(response.data);
-  //     handleFilterOne(filterOne);
-  //   }
-  // }
-
-  
-
   const fetchVacancies = async () => {
       const response = await api.get('/vacancies');
       setVacancies(response.data);
