@@ -1,15 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-from dataclasses import dataclass
-
-@dataclass
-class Vacancy:
-    name: str 
-    work_schedule: str 
-    city: str 
-    salary: int 
-    experience: str
-
 
 def get_url(name:str, salary: int, work_schedule: str):
     if work_schedule == "Полный день":
