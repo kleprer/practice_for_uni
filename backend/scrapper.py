@@ -33,29 +33,7 @@ def get_vacancies(name: str, salary: int, work_schedule: str):
         work_schedule = schedule
         parse_city = result.find('span', {'data-qa': 'vacancy-serp__vacancy-address_narrow'}).find('span', {'class': 'fake-magritte-primary-text--Hdw8FvkOzzOcoR4xXWni'}).text
         parse_salary = result.find('span', {'class': 'fake-magritte-primary-text--Hdw8FvkOzzOcoR4xXWni compensation-text--kTJ0_rp54B2vNeZ3CTt2 separate-line-on-xs--mtby5gO4J0ixtqzW38wh'}).text
-        parse_salary = parse_salary.replace('до вычета налогов', '')
-        parse_salary = parse_salary.replace('на руки', '')
-        if '–' in parse_salary:
-            index = parse_salary.index('–')
-            parse_salary = parse_salary[0:index-1].replace('\u202f', '')
-        if 'от ' in parse_salary:
-            index = parse_salary.index('от ')
-            parse_salary = parse_salary[index + 3:].replace('\u202f', '')
-        if 'до ' in parse_salary:
-            index = parse_salary.index('до ')
-            parse_salary = parse_salary[index + 3:].replace('\u202f', '')
-        if '₽' in parse_salary:
-            index = parse_salary.index('₽')
-            parse_salary = parse_salary[0:index-1].replace('\u202f', '')
-        if '$' in parse_salary:
-            index = parse_salary.index('$')
-            parse_salary = parse_salary[0:index-1].replace('\u202f', '')
-        if '–' in parse_salary:
-            index = parse_salary.index('–')
-            parse_salary = parse_salary[0:index-1].replace('\u202f', '')
         parse_experience = result.find('span', {'data-qa': "vacancy-serp__vacancy-work-experience"}).text
-        # data = Vacancy(title, schedule, parse_city, actual_salary,
-        #                     parse_experience)
         data = {
             'name': title,
             'work_schedule': schedule,
@@ -64,10 +42,15 @@ def get_vacancies(name: str, salary: int, work_schedule: str):
             'experience': parse_experience
         }
         list_vacancies.append(data)
-        # print(data)
-        # vacancy = Vacancy(name=title, work_schedule=work_schedule, city=parse_city, salary=parse_salary,
-        #                                experience=parse_experience)
-        # list_vacancies.append(vacancy)
-        # print(vacancy)
     return list_vacancies
-print(get_vacancies('стажер', 10000, 'Полный день'))
+
+
+def format_salary(parse_salary):
+    parse_salary = parse_salary.replace('до вычета налогов', '')
+    parse_salary = parse_salary.replace('на руки', '')
+    replacings = ['от ', 'до ', '₽', '$', '–']
+    for r in replacings:
+        if r in parse_salary:
+            index = parse_salary.index(r)
+        parse_salary = parse_salary[index + 3:].replace('\u202f', '')
+    return parse_salary

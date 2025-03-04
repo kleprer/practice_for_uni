@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Depends
 from typing import Annotated, List
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-import database 
 from database import new_session, engine
 import models
 from fastapi.middleware.cors import CORSMiddleware
@@ -52,15 +51,16 @@ models.Base.metadata.create_all(bind=engine)
 
 @app.post("/vacancies", response_model=List[VacancyModel])
 async def create_vacancies(vacancy: VacancyBase, db: db_dependency):
-    # models.Vacancy.__table__.drop(engine, checkfirst=True)
-    # db.commit()
     vacancies = db.query(models.Vacancy).all()
-    list_vacancies = get_vacancies(name=vacancy.name, salary=vacancy.salary, work_schedule=vacancy.work_schedule)
+    list_vacancies = get_vacancies(name=vacancy.name, 
+                                   salary=vacancy.salary, 
+                                   work_schedule=vacancy.work_schedule)
     print(list_vacancies)
     db_vacancies = []
     for vacancy in list_vacancies:
         db_vacancy = models.Vacancy(name=vacancy['name'], work_schedule=vacancy['work_schedule'], 
-                                    city=vacancy['city'], salary=vacancy['salary'], experience=vacancy['experience'])
+                                    city=vacancy['city'], salary=vacancy['salary'], 
+                                    experience=vacancy['experience'])
         if db_vacancy not in vacancies:
             db.add(db_vacancy)
             db.commit()
@@ -73,31 +73,27 @@ async def read_vacancies(db: db_dependency):
     vacancies  = db.query(models.Vacancy).all()
     return vacancies
 
-@app.delete('/vacancies', response_model=List[VacancyModel])
-async def delete_vacancies(db: db_dependency):
-    vacancies = db.query(models.Vacancy).all()
-    for vacancy in vacancies:
-        db.delete(vacancy)
-        db.commit()
-    return vacancies
-
 @app.get("/vacancies/sort/ScheduleExperience", response_model=List[VacancyModel])
-async def get_sorted_by_schedule_and_experience(experience: str, schedule: str, db: db_dependency):
+async def schedule_and_experience(experience: str, 
+                                    schedule: str, db: db_dependency):
     sorted_vacancies = []
     vacancies = db.query(models.Vacancy).all()
-    if schedule != "Все" and experience != "Все":
-        for v in vacancies:
-            if v.work_schedule ==  schedule and v.experience == experience:
-                sorted_vacancies += [v]
-    elif schedule != "Все" and experience == "Все":
-        for v in vacancies:
-            if v.work_schedule ==  schedule:
-                sorted_vacancies += [v]
-    elif schedule == "Все" and experience != "Все":
-        for v in vacancies:
-            if v.experience ==  experience:
-                sorted_vacancies += [v]
+    if schedule != "Все":
+        if experience != "Все":
+            for v in vacancies:
+                if v.work_schedule ==  schedule and v.experience == experience:
+                    sorted_vacancies += [v]
+        else:
+            for v in vacancies:
+                if v.work_schedule ==  schedule:
+                    sorted_vacancies += [v]
+
     else:
-        sorted_vacancies = vacancies
+        if experience != "Все":
+            for v in vacancies:
+                if v.experience ==  experience:
+                    sorted_vacancies += [v]
+        else:    
+            sorted_vacancies = vacancies
 
     return sorted_vacancies
